@@ -1,6 +1,17 @@
 # benchmark-cppbuff
 
 
+### Submodule Init 
+
+```
+git clone https://github.com/cdecl/benchmark-cppbuff.git
+cd benchmark-cppbuff
+
+git submodule init
+git submodule update
+```
+
+
 ### Build 
 
 ```
