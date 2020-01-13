@@ -8,8 +8,16 @@ add_subdirectory(benchmark)
 
 
 set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2")
-include_directories( ${CMAKE_SOURCE_DIR}/benchmark/include )
-link_directories( ${CMAKE_BINARY_DIR}/build/benchmark/src )
+
+include_directories( 
+	${CMAKE_SOURCE_DIR}/benchmark/include 
+	${CMAKE_SOURCE_DIR}/fmt/include  
+)
+
+link_directories( 
+	${CMAKE_BINARY_DIR}/build/benchmark/src 
+)
+
 link_libraries( benchmark pthread )
 
 file(GLOB src "*.cpp")
