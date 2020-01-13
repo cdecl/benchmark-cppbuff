@@ -1,0 +1,26 @@
+cmake_minimum_required(VERSION 3.5)
+
+project(main)
+
+set(BENCHMARK_ENABLE_TESTING OFF)
+set(CMAKE_BUILD_TYPE Release)
+add_subdirectory(benchmark)
+
+
+set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2")
+include_directories( ${CMAKE_SOURCE_DIR}/benchmark/include )
+link_directories( ${CMAKE_BINARY_DIR}/build/benchmark/src )
+link_libraries( benchmark pthread )
+
+file(GLOB src "*.cpp")
+#set(src xxx.cpp)
+
+# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+
+add_executable(main ${src})
+# add_library(libname SHARED ${src})
+# add_library(libname-static STATIC ${src})
+# set_target_properties(libname-static PROPERTIES OUTPUT_NAME libname)
+
