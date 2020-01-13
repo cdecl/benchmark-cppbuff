@@ -6,19 +6,19 @@ set(BENCHMARK_ENABLE_TESTING OFF)
 set(CMAKE_BUILD_TYPE Release)
 add_subdirectory(benchmark)
 
-
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2")
-
 include_directories( 
 	${CMAKE_SOURCE_DIR}/benchmark/include 
 	${CMAKE_SOURCE_DIR}/fmt/include  
 )
 
-link_directories( 
-	${CMAKE_BINARY_DIR}/build/benchmark/src 
-)
-
-link_libraries( benchmark pthread )
+if (MSVC)
+	set(CMAKE_CXX_FLAGS "/EHsc /O2")
+	link_libraries( benchmark )
+else()
+	set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2")
+	# link_directories({CMAKE_BINARY_DIR}/build/benchmark/src)
+	link_libraries( benchmark pthread )
+endif()
 
 file(GLOB src "*.cpp")
 #set(src xxx.cpp)

@@ -1,7 +1,7 @@
 # benchmark-cppbuff
 
 
-### Submodule Init 
+### Git Submodule Init 
 
 ```
 git clone https://github.com/cdecl/benchmark-cppbuff.git
@@ -11,23 +11,44 @@ git submodule init
 git submodule update
 ```
 
+### Build - Posix
 
-### Build 
-
-```
-# Make Build Directory
+```sh
 $ mkdir build 
 $ cd build
 
-# cmake 
+$ cmake ..
+$ make 
+
+## Run
+$ main
+```
+
+### Build - MinGW
+
+```sh
+$ mkdir build 
+$ cd build
+
 $ SET CMAKE_CXX_COMPILER=g++ 
 $ cmake -G "MinGW Makefiles" ..
-
-# make build
 $ make 
+
+## Run
+$ main
 ```
 
-### Run
-```
-$ main
+### Build - MSVC
+
+```sh
+## MSVC Command Prompt
+$ mkdir build 
+$ cd build
+
+$ cmake ..
+
+$ msbuild main.sln -p:Configuration=Release
+
+## Run
+$ Release\main
 ```
