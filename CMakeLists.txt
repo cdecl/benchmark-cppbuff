@@ -23,12 +23,9 @@ endif()
 file(GLOB src "*.cpp")
 #set(src xxx.cpp)
 
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-
 add_executable(main ${src})
 # add_library(libname SHARED ${src})
-# add_library(libname-static STATIC ${src})
-# set_target_properties(libname-static PROPERTIES OUTPUT_NAME libname)
+
+set(CMAKE_INSTALL_PREFIX ${CMAKE_SOURCE_DIR})
+install (TARGETS main)
 
