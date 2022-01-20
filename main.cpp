@@ -1,49 +1,86 @@
-
+#include <fstream>
 #include <sstream>
 using namespace std;
 
-#include "fmt/format.h"
-#include "benchmark/benchmark.h"
+#include <benchmark/benchmark.h>
+#include <fmt/core.h>
+#include <fmt/ostream.h>
+#include <fmt/os.h>
 
-const int LOOP = 1000;
-const string Data { "1234567890 "};
 
-
-void fmt_memorybuffer(benchmark::State &state) 
+inline std::string getSample()
 {
-	fmt::memory_buffer buff;
+	return "abcdefghijklmnopqrstuvwxyz\n";
+}
+
+
+
+static void WriteFmtOstream(benchmark::State& state) {
+	std::ofstream fout {"out_fmtostream.txt"};
+	auto str = getSample();
+
 	for (auto _ : state) {
-		buff.clear();
-		for (int i = 0; i < LOOP; ++i) {
-			buff.append(Data.c_str(), Data.c_str() + Data.size());
-		}
+		fmt::print(fout, str);
 	}
 }
-BENCHMARK(fmt_memorybuffer);
+BENCHMARK(WriteFmtOstream);
 
-void string_append(benchmark::State &state) 
-{
-	string s{};
+static void WriteFmtOutputflie(benchmark::State& state) {
+	auto out = fmt::output_file("out_fmtoutputfile.txt");
+	auto str = getSample();
+
 	for (auto _ : state) {
-		s.clear();
-		for (int i = 0; i < LOOP; ++i) {
-			s.append(Data);
-		}
+		out.print(str);
 	}
 }
-BENCHMARK(string_append);
+BENCHMARK(WriteFmtOutputflie);
 
-void stringstream_append(benchmark::State &state) 
-{
-	ostringstream ss{};
+static void WriteFopen(benchmark::State& state) {
+	auto *fp = fopen("out_fopen.txt", "w");
+	auto str = getSample();
+
 	for (auto _ : state) {
-		ss.str("");
-		for (int i = 0; i < LOOP; ++i) {
-			ss.write(Data.c_str(), Data.size());
-		}
+		fputs(str.c_str(), fp);
+	}
+	fclose(fp);
+}
+BENCHMARK(WriteFopen);
+
+static void WriteFopenBuff(benchmark::State& state) {
+	auto *fp = fopen("out_fopenbuff.txt", "w");
+	auto str = getSample();
+	std::ostringstream os;
+
+	for (auto _ : state) {
+		os << str;
+	}
+
+	fputs(os.str().c_str(), fp);
+	fclose(fp);
+}
+BENCHMARK(WriteFopenBuff);
+
+static void WriteOfstream(benchmark::State& state) {
+	std::ofstream fout {"out_ofstream.txt"};
+	auto str = getSample();
+
+	for (auto _ : state) {
+		fout << str;
 	}
 }
-BENCHMARK(stringstream_append);
+BENCHMARK(WriteOfstream);
+
+static void WriteOfstreamBuff(benchmark::State& state) {
+	std::ofstream fout {"out_ofstreambuff.txt"};
+	auto str = getSample();
+	std::ostringstream os;
+
+	for (auto _ : state) {
+		os << str;
+	}
+	fout << os.str();
+}
+BENCHMARK(WriteOfstreamBuff);
 
 
 BENCHMARK_MAIN();

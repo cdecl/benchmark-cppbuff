@@ -1,34 +1,24 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.11)
 
 project(main)
 
-set(BENCHMARK_ENABLE_TESTING OFF)
-set(CMAKE_BUILD_TYPE Release)
-add_subdirectory(benchmark)
+set(CMAKE_CXX_STANDARD 17)
 
-include_directories( 
-	${CMAKE_SOURCE_DIR}/benchmark/include 
-	${CMAKE_SOURCE_DIR}/fmt/include  
-)
+add_executable(main main.cpp)
 
 if (MSVC)
-	set(CMAKE_CXX_FLAGS "/EHsc /O2")
-	link_libraries( benchmark )
+	target_compile_options(main PRIVATE /MT)
+	target_compile_definitions(main PRIVATE _CRT_SECURE_NO_WARNINGS)
 else()
-	set(CMAKE_CXX_FLAGS "-Wall -std=c++14 -O2")
-	# link_directories({CMAKE_BINARY_DIR}/build/benchmark/src)
-	link_libraries( benchmark pthread )
+	target_compile_options(main PRIVATE -Wall -O2)
 endif()
 
-file(GLOB src "*.cpp")
-#set(src xxx.cpp)
 
-# set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-# set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+find_package(benchmark CONFIG REQUIRED)
+target_link_libraries(main PRIVATE benchmark::benchmark benchmark::benchmark_main)
 
-add_executable(main ${src})
-# add_library(libname SHARED ${src})
-# add_library(libname-static STATIC ${src})
-# set_target_properties(libname-static PROPERTIES OUTPUT_NAME libname)
+find_package(fmt CONFIG REQUIRED)
+target_link_libraries(main PRIVATE fmt::fmt)
 
+# cmake .. -DCMAKE_TOOLCHAIN_FILE=D:/Lib/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static
+# cmake -G "MSYS Makefiles" .. -DCMAKE_TOOLCHAIN_FILE=D:/Lib/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-mingw-static
