@@ -88,7 +88,7 @@ $ build/main
 
 ```sh
 #
-$ cmake -B build-vc -A x64 -DCMAKE_TOOLCHAIN_FILE=D:/Lib/vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static .
+$ cmake -B build-vc -A x64 -DCMAKE_TOOLCHAIN_FILE=<vcpkg>/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows-static .
 
 # build
 $ cmake --build build-vc --config Release
